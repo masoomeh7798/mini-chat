@@ -1,9 +1,9 @@
 import { Server } from "socket.io";
 import {createServer} from 'http'
 import express from 'express'
-import User from "../Models/UserMd";
+import User from "../Models/UserMd.js";
+import app from '../app.js'
 
-const app=express()
 const server=createServer(app)
 const io=new Server(server,{
     cors:'*'
@@ -28,7 +28,7 @@ io.on('connection',async(socket)=>{
     }
     const user=await User.findById(userId)
     if(!user)return
-    const onlineMembers=user?.members?.map(e=>String(e)).filter(e=>onlineUsers[member] ? e :false)
+    const onlineMembers=user?.members?.map(e=>String(e)).filter(e=>onlineUsers[e] ? e :false)
     for(let member of onlineMembers){
         io.to(onlineUsers[member]).emit('newOnlineUser',userId)
     }
@@ -39,7 +39,9 @@ io.on('connection',async(socket)=>{
         delete onlineUsers[userId]
         const newOnlineMembers=user?.members?.map(e=>String(e))?.filter(e=>onlineUsers[e] ? e : false)
         for(let member of newOnlineMembers){
+            
             io.to(onlineUsers[member]).emit('OfflineUser',userId)
+
         }
     })
 })

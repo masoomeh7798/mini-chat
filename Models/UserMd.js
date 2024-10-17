@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const userSchema=new mongoose.Schema({
     phone:{
-        type:Number,
+        type:String,
         match:[
             /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/g,
             "phone number incorrect",

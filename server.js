@@ -1,6 +1,6 @@
-import app from './app.js'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import { server } from './Socket/index.js'
 dotenv.config({path:'./config.env'})
 const PORT=process.env.PORT || 5001
 
@@ -12,6 +12,6 @@ mongoose.connect(process.env.DATA_BASE_URL).then(()=>{
 }
 )
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`server is running on port ${PORT}`);
 })

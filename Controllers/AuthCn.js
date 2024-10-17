@@ -6,11 +6,11 @@ import jwt from 'jsonwebtoken'
 
 
 export const auth = catchAsync(async (req, res, next) => {
-    const { phone = null } = req?.body
+    const { phone = null } = req.body
     if (!phone) {
         return next(new handleError('email or phone is required', 400))
     }
-    const otp = sendAuthCode(phone)
+    const otp =await sendAuthCode(phone)
     if (otp.success) {
         return res.status(200).json({
             success: true,
@@ -32,11 +32,12 @@ export const auth = catchAsync(async (req, res, next) => {
 
 
 export const checkCode = catchAsync(async (req, res, next) => {
-    const { phone = null, code = null } = req?.body
+    const { phone = null, code = null } = req.body
     if (!code || !phone) {
         return next(new handleError('code is required', 400))
     }
-    const otp = verifyCode(phone, code)
+    const otp =await verifyCode(phone, code)
+    console.log(otp);
     if (!otp.success) {
         return next(new handleError('code is incorrect', 400))
     }
